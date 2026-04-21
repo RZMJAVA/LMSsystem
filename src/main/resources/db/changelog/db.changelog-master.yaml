@@ -1,0 +1,136 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 001-create-all-tables
+      author: you
+
+      changes:
+
+        # =======================
+        # COURSES
+        # =======================
+        - createTable:
+            tableName: t_courses
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+
+              - column:
+                  name: name
+                  type: varchar(255)
+
+              - column:
+                  name: description
+                  type: text
+
+              - column:
+                  name: created_time
+                  type: timestamp
+
+              - column:
+                  name: updated_time
+                  type: timestamp
+
+
+        # =======================
+        # CHAPTERS
+        # =======================
+        - createTable:
+            tableName: t_chapters
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+
+              - column:
+                  name: name
+                  type: varchar(255)
+
+              - column:
+                  name: description
+                  type: text
+
+              - column:
+                  name: chapter_order
+                  type: int
+
+              # как в entity: @JoinColumn(name = "course")
+              - column:
+                  name: course
+                  type: bigint
+
+              - column:
+                  name: created_time
+                  type: timestamp
+
+              - column:
+                  name: updated_time
+                  type: timestamp
+
+
+        - addForeignKeyConstraint:
+            baseTableName: t_chapters
+            baseColumnNames: course
+            referencedTableName: t_courses
+            referencedColumnNames: id
+            constraintName: fk_chapters_courses
+            onDelete: CASCADE
+
+
+        # =======================
+        # LESSONS
+        # =======================
+        - createTable:
+            tableName: t_lessons
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+
+              - column:
+                  name: name
+                  type: varchar(255)
+
+              - column:
+                  name: description
+                  type: text
+
+              - column:
+                  name: content
+                  type: text
+
+              - column:
+                  name: lesson_order
+                  type: int
+
+              # как в entity: @JoinColumn(name = "chapter")
+              - column:
+                  name: chapter
+                  type: bigint
+
+              - column:
+                  name: created_time
+                  type: timestamp
+
+              - column:
+                  name: updated_time
+                  type: timestamp
+
+
+        - addForeignKeyConstraint:
+            baseTableName: t_lessons
+            baseColumnNames: chapter
+            referencedTableName: t_chapters
+            referencedColumnNames: id
+            constraintName: fk_lessons_chapters
+            onDelete: CASCADE
